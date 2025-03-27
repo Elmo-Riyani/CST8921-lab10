@@ -45,6 +45,10 @@ Set up Azure Cognitive Search Index and deploy Embedding & Large Language Models
 4. Clicked **Review + Create**, then **Create**
 5. After deployment, accessed the resource
 
+![Step 1](Screenshots/1.PNG)
+![Step 2](Screenshots/2.PNG)
+![Step 3](Screenshots/3.PNG)
+
 #### ✅ Step 2: Create an Index in Azure AI Search
 
 1. Navigated to **Indexes** → **Add Index**
@@ -53,11 +57,20 @@ Set up Azure Cognitive Search Index and deploy Embedding & Large Language Models
    - Field 2: `source` (retrievable, searchable)
 3. Clicked **Create**
 
+![Step 1](Screenshots/4.PNG)
+![Step 2](Screenshots/5.PNG)
+![Step 3](Screenshots/6.PNG)
+![Step 1](Screenshots/7.PNG)
+![Step 2](Screenshots/8.PNG)
+
 #### ✅ Step 3: Retrieve Endpoint & Key
 
 - Collected Endpoint URL from **Overview**
 - Copied Primary Admin Key from **Keys**
 - Saved for scripting
+
+![Step 2](Screenshots/8.PNG)
+![Step 2](Screenshots/9.PNG)
 
 ---
 
@@ -69,12 +82,26 @@ Set up Azure Cognitive Search Index and deploy Embedding & Large Language Models
 2. Selected networking options, skipped tags
 3. Clicked **Review + Create** → Deployed and accessed the resource
 
+![Step 1](Screenshots/10.PNG)
+![Step 2](Screenshots/11.PNG)
+![Step 3](Screenshots/12.PNG)
+![Step 1](Screenshots/13.PNG)
+
 #### ✅ Step 2: Deploy Embedding and LLM Models
 
 1. Deployed:
    - **text-embedding-ada-002** → named `embedding-model`
    - **gpt-3.5-turbo-instruct** → named `llm-model`
 2. Saved deployment names
+
+![Step 1](Screenshots/14.PNG)
+![Step 2](Screenshots/15.PNG)
+![Step 3](Screenshots/17.PNG)
+![Step 1](Screenshots/18.PNG)
+![Step 2](Screenshots/19.PNG)
+![Step 1](Screenshots/20.PNG)
+![Step 2](Screenshots/21.PNG)
+![Step 3](Screenshots/22.PNG)
 
 #### ✅ Step 3: Retrieve Endpoint & Key
 
@@ -91,6 +118,8 @@ Set up Azure Cognitive Search Index and deploy Embedding & Large Language Models
 pip install azure-search-documents langchain openai pypdf tiktoken unstructured langchain-openai langchain-community
 ```
 
+![Step 1](Screenshots/23.PNG)
+
 #### ✅ Step 2: Import Required Libraries
 
 ```python
@@ -101,6 +130,8 @@ from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
 import os
 ```
+
+![Step 1](Screenshots/24.PNG)
 
 #### ✅ Step 3: Configure Azure Cognitive Search Client
 
@@ -113,6 +144,8 @@ credential = AzureKeyCredential(key)
 client = SearchClient(endpoint=endpoint, index_name=index_name, credential=credential)
 ```
 
+![Step 1](Screenshots/25.PNG)
+
 #### ✅ Step 4: Configure LLM Model
 
 ```python
@@ -123,6 +156,7 @@ os.environ["AZURE_OPENAI_ENDPOINT"] = "YOUR_OPENAI_ENDPOINT"
 
 llm = AzureOpenAI(deployment_name="YOUR_LLM_DEPLOYMENT_NAME", model="gpt-3.5-turbo-instruct", temperature=1)
 ```
+![Step 1](Screenshots/26.PNG)
 
 #### ✅ Step 5: Load and Process PDF Data
 
@@ -142,6 +176,8 @@ text_splitter = RecursiveCharacterTextSplitter(
 chunks = text_splitter.split_documents(data)
 ```
 
+![Step 1](Screenshots/27.PNG)
+
 #### ✅ Step 6: Store Data in Azure Search Index
 
 ```python
@@ -153,6 +189,8 @@ for index, chunk in enumerate(chunks):
     }
     result = client.upload_documents(documents=[data])
 ```
+
+![Step 1](Screenshots/28.PNG)
 
 #### ✅ Step 7: Create Function for Retrieval-Augmented Generation
 
@@ -180,6 +218,8 @@ Answer:"""
     return response
 ```
 
+![Step 1](Screenshots/29.PNG)
+
 #### ✅ Step 8: Test the System
 
 ```python
@@ -187,21 +227,45 @@ user_question = "What is deep learning?"
 response = generate_response(user_question)
 print("Answer:", response)
 ```
+![Step 1](Screenshots/30.PNG)
+
 
 ✅ **Sample Output:**
 ```
 Answer: Deep learning is a type of machine learning that uses algorithms to train high-level data representations and patterns from large amounts of data.
 ```
+![Step 1](Screenshots/32.PNG)
 
-⚠️ **Note:** A deprecation warning was resolved by using `.invoke()` instead of calling the LLM directly.
+
+⚠️ **Note:** 
+    
+- Install the langchain-community module:
+- 🛠 Run this in your terminal:
+```
+  pip install -U langchain-community
+```
+![Step 1](Screenshots/31.PNG)
+
+🔁 Then Update Your Code
+
+After installing, you should update the import for PyPDFLoader to use the new module path:
+✏ Replace this line:
+```
+from langchain.document_loaders import PyPDFLoader
+```
+✅ With this:
+```
+from langchain_community.document_loaders import PyPDFLoader
+```
+- A deprecation warning was resolved by using `.invoke()` instead of calling the LLM directly.
 
 ---
 
 ## ✅ Important Notes
 
 - All components were successfully integrated and tested in VS Code
-- Project structured in folder `lab10-rag-azure`
-- Screenshots of output, Azure portal, and code execution should be attached in Brightspace
+- Project structured in folder `CST8921-Lab10`
+
 
 ---
 
